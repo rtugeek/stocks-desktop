@@ -1,7 +1,6 @@
 import { Widget, WidgetKeyword } from "@widget-js/core";
 
-// TODO 修改组件信息，标题，描述，关键词
-const ClockWidget = new Widget({
+const StockWidget = new Widget({
   name: "cn.stocks.widget.stock",
   title: { "zh-CN": "股票" },
   description: { "zh-CN": "股票" },
@@ -15,7 +14,7 @@ const ClockWidget = new Widget({
   maxHeight: 5,
   previewImage: "/preview_clock.png",
   path: "/widget/clock",
-  configPagePath: "/widget/config/clock",
+  configPagePath: "/widget/config/clock?transparent=false&frame=true",
 });
 
-export default ClockWidget;
+export default StockWidget;

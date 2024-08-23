@@ -1,11 +1,9 @@
 <script lang="ts" setup>
 import { useWidget } from '@widget-js/vue3'
-import { ref } from 'vue'
-import { StockModel } from '@/widgets/clock/model/ClockModel'
-import { StockApi, useStockApi } from '@/api/stockApi';
+import { useStockApi } from '@/api/stockApi';
 
 const { displayStockData, errorMsg } = useStockApi()
-
+useWidget()
 </script>
 
 <template>

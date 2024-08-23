@@ -42,7 +42,7 @@
       "backgroundThrottling": true,
       "previewImage": "/preview_clock.png",
       "supportDeployMode": 17,
-      "configPagePath": "/widget/config/clock",
+      "configPagePath": "/widget/config/clock?transparent=false&frame=true",
       "routes": []
     }
   ],

@@ -1,6 +1,5 @@
 import { WidgetPackage } from '@widget-js/core'
 
-// TODO 完善组件包信息
 export default new WidgetPackage({
   author: 'Jason',
   description: {

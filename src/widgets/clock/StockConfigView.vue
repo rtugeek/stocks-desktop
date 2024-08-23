@@ -16,24 +16,25 @@ const widgetConfigOption = new WidgetConfigOption({
   theme: {
     backgroundColor: true,
     borderRadius: true,
+    fontSize: true,
   },
 })
 
-const stock_symbols = useStorage('stock_symbols', 'AAL,NVDA,MSFT,JMIA,RIVN')
+const stock_symbols = useStorage<string>('stock_symbols', 'AAL,NVDA,MSFT,JMIA,RIVN')
 </script>
 
 <template>
-  <WidgetEditDialog    
+  <WidgetEditDialog
     :widget-params="widgetParams"
     :option="widgetConfigOption"
     @apply="save()"
     @confirm="save({ closeWindow: true })"
   >
-    <template #custom>       
+    <template #custom>
       <el-form label-width="70">
         <el-form-item label="股票代号">
           <el-input
-            v-model="stock_symbols"            
+            v-model="stock_symbols"
             clearable
             placeholder="输入股票代号，逗号隔开"
             style="width: 240px;color: red;"

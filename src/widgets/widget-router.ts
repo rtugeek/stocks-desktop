@@ -1,9 +1,9 @@
 import type { RouteRecordRaw } from 'vue-router'
-import ClockWidgetRoutes from './clock/ClockWidgetRoutes'
+import StockWidgetRoutes from './clock/StockWidgetRoutes'
 
 // FBI WANING! IMPORT PLACE, DONT DELETE THIS LINE
 const WidgetRouter: RouteRecordRaw[] = [
-  ...ClockWidgetRoutes,
+  ...StockWidgetRoutes,
   // FBI WANING! ROUTE PLACE, DONT DELETE THIS LINE
 ]
 export default WidgetRouter

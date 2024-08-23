@@ -1,0 +1,50 @@
+{
+  "name": "cn.stocks.widget",
+  "version": "1.0.0",
+  "author": "Jason",
+  "homepage": "",
+  "title": {
+    "zh-CN": "实时股票"
+  },
+  "description": {
+    "zh-CN": "实时股票"
+  },
+  "entry": "/",
+  "hash": true,
+  "url": "",
+  "widgets": [
+    {
+      "name": "cn.stocks.widget.stock",
+      "title": {
+        "zh-CN": "股票"
+      },
+      "description": {
+        "zh-CN": "股票"
+      },
+      "keywords": [
+        "recommend"
+      ],
+      "security": false,
+      "permissions": [],
+      "lang": "zh-CN",
+      "width": 2,
+      "height": 4,
+      "maxWidth": 3,
+      "webviewTag": false,
+      "maxHeight": 5,
+      "minWidth": 2,
+      "minHeight": 3,
+      "movable": true,
+      "singleton": false,
+      "resizable": true,
+      "path": "/widget/clock",
+      "meta": {},
+      "backgroundThrottling": true,
+      "previewImage": "/preview_clock.png",
+      "supportDeployMode": 17,
+      "configPagePath": "/widget/config/clock",
+      "routes": []
+    }
+  ],
+  "pages": []
+}

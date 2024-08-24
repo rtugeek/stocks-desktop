@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import StockWidgetRoutes from './clock/StockWidgetRoutes'
+import StockWidgetRoutes from './stock/StockWidgetRoutes'
 
 // FBI WANING! IMPORT PLACE, DONT DELETE THIS LINE
 const WidgetRouter: RouteRecordRaw[] = [

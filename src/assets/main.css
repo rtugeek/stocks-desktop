@@ -1,6 +1,7 @@
-*{
+* {
     user-select: none;
 }
+
 body {
     /*background-color: #1a1a1a;*/
     font-family: Arial, sans-serif;
@@ -15,11 +16,13 @@ body {
 }
 
 .stock-data {
+    box-sizing: border-box;
     /*width: 80%;*/
     /*background-color: #2b2b2b;*/
     /*border-radius: 15px;*/
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 6px 12px;
+    overflow: hidden;
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);*/
 }
 
 .stock-item {
@@ -27,7 +30,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 10px 0;
-    border-bottom: 1px solid #3d3d3d;
+    border-bottom: 1px solid var(--widget-border-color);
     height: 6px;
 }
 
@@ -38,7 +41,7 @@ body {
 .stock-symbol {
     font-size: 0.7em;
     font-weight: bold;
-    color:rgb(181, 151, 115);
+    color: rgb(181, 151, 115);
 }
 
 .stock-price {
@@ -62,4 +65,24 @@ body {
 
 .stock-change.negative {
     color: #f44336; /* Red for negative change */
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading {
+    color: var(--widget-color);
+    font-size: 1.2em;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    transform-origin: 50% 50%;
+    display: flex;
+    animation: infinite 1s linear spin;
 }

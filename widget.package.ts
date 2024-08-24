@@ -12,7 +12,11 @@ export default new WidgetPackage({
   title: {
     'zh-CN': '实时股票',
   },
-  version: '1.0.0',
+  remote: {
+    entry: 'https://widgetjs.cn/stock',
+    base: '/stock',
+    hostname: 'widgetjs.cn',
+  },
   devOptions: {
     folder: './src/widgets/',
   },

@@ -1,20 +1,17 @@
 import axios from "axios";
+import {computed, reactive, ref, watch} from "vue";
+import {useDebounceFn, useIntervalFn, useStorage} from "@vueuse/core";
+import {DEFAULT_STOCK_SYMBOLS, StockModel} from "@/widgets/stock/model/StockModel";
+import {BaiDuStockApi} from "@/api/BaiDuStockApi";
+import {delay} from "@widget-js/core";
 import * as cheerio from "cheerio";
-import { computed, ref, watch } from "vue";
-import { useDebounceFn, useIntervalFn, useStorage } from "@vueuse/core";
-import { StockModel } from "@/widgets/clock/model/ClockModel";
 
 const url = "https://finance.yahoo.com/quote/";
+
 export class StockApi {
-  static async getStockPrice(): Promise<StockModel[] | null> {
+  static async getStockPrice(symbol: string): Promise<StockModel | null> {
     try {
-      const symbols = useStorage("stock_symbols", "").value;
-      //   const symbols = "AAL,NVDA,MSFT,JMIA,RIVN";
-      const symbols_arr = symbols.split(",");
-      let all_stocks: StockModel[] = [];
-      // Fetch the page content
-      for (let index = 0; index < symbols_arr.length; index++) {
-        const { data } = await axios.get(url + symbols_arr[index]);
+      const {data} = await axios.get(url + symbol);
 
         // Load the page content into cheerio
         const $ = cheerio.load(data);
@@ -31,15 +28,10 @@ export class StockApi {
           changeArrow: "up",
         };
 
-        const price_change_f: number = parseFloat(price_change);
-        if (!isNaN(price_change_f) && price_change_f < 0) {
-          aStock.changeArrow = "down";
-        }
-
-        all_stocks.push(aStock);
+      const price_change_f: number = parseFloat(price_change);
+      if (!isNaN(price_change_f) && price_change_f < 0) {
+        aStock.changeArrow = "down";
       }
-
-      return all_stocks;
     } catch (error) {
       console.error("Error fetching or parsing the page:", error);
       return null;
@@ -48,32 +40,62 @@ export class StockApi {
 }
 
 export function useStockApi() {
-  const stockData = ref<StockModel[]>();
+  const stockData = reactive<StockModel[]>([]);
   const errorMsg = ref("");
+  const loading = ref(false);
   const displayStockData = computed(() => {
-    return stockData.value;
+    return stockData;
   });
-
-  const update = () => {
-    StockApi.getStockPrice()
-      .then((content) => {
-        if (content) {
-          console.log(`Content of the second <fin-streamer>: ${content}`);
-          stockData.value = content;
+  const symbols = useStorage("stock_symbols", DEFAULT_STOCK_SYMBOLS);
+  const symbols_arr = computed(()=> symbols.value.split(",").filter((s) => s.trim().length > 0));
+  watch(symbols, () => {
+    //移除被删除的股票
+    for (let i = 0; i < stockData.length; i++) {
+      if (!symbols_arr.value.includes(stockData[i].symbol)) {
+        stockData.splice(i, 1);
+        i--;
+      }
+    }
+    debounceUpdate();
+  })
+  const update = async () => {
+    loading.value = true
+    try {
+      console.log(symbols_arr.value)
+      for (const symbol of symbols_arr.value) {
+        const stockModel = await BaiDuStockApi.getStockPrice(symbol)
+        console.log(stockModel)
+        // 每秒只请求一次，防止短时间内发起多次请求，被服务器拒绝
+        if (stockModel) {
+          console.log(`Content of the second`, stockModel);
+          // Update the stock data
+          const index = stockData.findIndex((s) => s.symbol === stockModel.symbol)
+          if (index > -1) {
+            stockData[index] = stockModel;
+          }else{
+            stockData.push(stockModel);
+          }
         } else {
           console.log("Failed to retrieve the content.");
         }
-      })
-      .catch((e) => {
-        errorMsg.value = e.message;
-      })
-      .finally();
+        await delay(1000)
+      }
+    } catch (e) {
+      errorMsg.value = e.message;
+    } finally {
+      loading.value = false
+    }
   };
+
+  const debounceUpdate = useDebounceFn(update, 3000);
+
   update();
-  useDebounceFn(update, 60000);
+
+  useIntervalFn(debounceUpdate, 60000);
 
   return {
     displayStockData,
     errorMsg,
+    loading
   };
 }

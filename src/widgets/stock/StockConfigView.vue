@@ -4,13 +4,11 @@ import {
   WidgetEditDialog,
   useWidget,
 } from '@widget-js/vue3'
-import { BrowserWindowApi } from '@widget-js/core'
-import {   useStorage } from "@vueuse/core";
-// import { StockModel } from '@/widgets/clock/model/ClockModel'
+import { useStorage } from "@vueuse/core";
+import {computed} from "vue";
+import {DEFAULT_STOCK_SYMBOLS} from "@/widgets/stock/model/StockModel";
 
 const {   widgetParams, save } = useWidget()
-BrowserWindowApi.setup({ width: 600, height: 400 })
-// 修改成需要设置组件参数配置
 const widgetConfigOption = new WidgetConfigOption({
   title: '股票设置',
   theme: {
@@ -20,7 +18,16 @@ const widgetConfigOption = new WidgetConfigOption({
   },
 })
 
-const stock_symbols = useStorage<string>('stock_symbols', 'AAL,NVDA,MSFT,JMIA,RIVN')
+const stock_symbols = useStorage<string>('stock_symbols', DEFAULT_STOCK_SYMBOLS)
+const stockSymbolsModel = computed<string>({
+  get:()=>{
+    return stock_symbols.value
+  },
+  set:(value:string)=>{
+    //替换全角逗号为半角逗号
+    stock_symbols.value = value.toUpperCase().replace(/，/g, ',')
+  }
+})
 </script>
 
 <template>
@@ -34,10 +41,10 @@ const stock_symbols = useStorage<string>('stock_symbols', 'AAL,NVDA,MSFT,JMIA,RI
       <el-form label-width="70">
         <el-form-item label="股票代号">
           <el-input
-            v-model="stock_symbols"
+            v-model="stockSymbolsModel"
             clearable
             placeholder="输入股票代号，逗号隔开"
-            style="width: 240px;color: red;"
+            style="color: red;"
           />
           </el-form-item>
         </el-form>

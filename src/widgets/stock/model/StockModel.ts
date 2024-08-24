@@ -6,3 +6,6 @@ export class StockModel {
   change: string = "";
   changeArrow: string = "up";
 }
+
+
+export const DEFAULT_STOCK_SYMBOLS = "AAPL,GOOGL,MSFT,AMZN,TSLA";

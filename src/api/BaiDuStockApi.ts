@@ -13,7 +13,8 @@ export class BaiDuStockApi {
             symbol: symbol,
             price: stock.price,
             change: stock.ratio,
-            changeArrow: stock.status == '1' ? 'up' : 'down'
+            changeArrow: stock.status == '1' ? 'up' : 'down',
+            name: stock.name
           } as StockModel
         }
       } else {

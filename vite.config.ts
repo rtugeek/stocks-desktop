@@ -1,6 +1,7 @@
 import {URL, fileURLToPath} from 'node:url'
 import widget from '@widget-js/vite-plugin-widget'
 import AutoImport from 'unplugin-auto-import/vite'
+import UnoCSS from 'unocss/vite'
 import Components from 'unplugin-vue-components/vite'
 import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -11,6 +12,7 @@ export default defineConfig({
     base: '/stock',
     plugins: [vue(),
         widget(),
+        UnoCSS(),
         AutoImport({resolvers: [ElementPlusResolver()]}),
         Components({resolvers: [ElementPlusResolver()]})],
     resolve: {

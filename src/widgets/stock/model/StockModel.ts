@@ -5,6 +5,7 @@ export class StockModel {
   price: string = "";
   change: string = "";
   changeArrow: string = "up";
+  name: string = "";
 }
 
 

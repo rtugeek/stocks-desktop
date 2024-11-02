@@ -1,38 +1,40 @@
 <script lang="ts" setup>
-import {useWidget} from '@widget-js/vue3'
-import {Refresh} from '@icon-park/vue-next';
-import {useStockApi} from "@/hook/useStockApi";
-import {useStorage} from "@vueuse/core";
-import {computed} from "vue";
+import { useStockApi } from '@/hook/useStockApi'
+import { Refresh } from '@icon-park/vue-next'
+import { useStorage } from '@vueuse/core'
+import { useWidget, useWidgetTheme } from '@widget-js/vue3'
+import { computed } from 'vue'
 
-const {displayStockData, loading} = useStockApi()
-const {sizeStyle} = useWidget()
+const { displayStockData, loading } = useStockApi()
+const { sizeStyle } = useWidget()
 const stockColor = useStorage('stock_color', 0)
 const stockTitle = useStorage('stock_title', 0)
 const titleProp = computed(() => {
   return stockTitle.value === 0 ? 'symbol' : 'name'
 })
+useWidgetTheme()
 </script>
 
 <template>
   <widget-wrapper>
     <el-scrollbar :height="sizeStyle.height">
-      <div class="stock-data">
-        <Refresh class="loading" v-show="loading"/>
-        <div class="stock-item flex" v-for="stock in displayStockData" :key="stock.symbol">
+      <div class="stock-data flex flex-col">
+        <Refresh v-show="loading" class="loading" />
+        <div v-for="stock in displayStockData" :key="stock.symbol" class="stock-item flex">
           <span class="stock-title flex-1">{{ stock[titleProp] }}</span>
           <span class="stock-price flex-1">{{ stock.price }}</span>
-          <span v-if="stock.changeArrow==='up'" class="stock-change positive" :class="{'china':stockColor == 0}">
-                <i class="fas fa-arrow-up"></i> {{ stock.change }}
-            </span>
-          <span v-if="stock.changeArrow==='down'" class="stock-change negative" :class="{'china':stockColor == 0} ">
-                <i class="fas fa-arrow-down"></i> {{ stock.change }}
-            </span>
+          <span v-if="stock.changeArrow === 'up'" class="stock-change positive" :class="{ china: stockColor == 0 }">
+            <i class="fas fa-arrow-up" /> {{ stock.change }}
+          </span>
+          <span v-if="stock.changeArrow === 'down'" class="stock-change negative" :class="{ china: stockColor == 0 } ">
+            <i class="fas fa-arrow-down" /> {{ stock.change }}
+          </span>
         </div>
       </div>
     </el-scrollbar>
   </widget-wrapper>
 </template>
+
 <style>
 .stock-data {
   box-sizing: border-box;
@@ -58,18 +60,15 @@ const titleProp = computed(() => {
 }
 
 .stock-title {
-  font-size: 0.7em;
   font-weight: bold;
   color: rgb(181, 151, 115);
 }
 
 .stock-price {
-  font-size: 0.6em;
   color: #f0f0f0;
 }
 
 .stock-change {
-  font-size: 0.6em;
   display: flex;
   align-items: center;
 }
@@ -89,7 +88,7 @@ const titleProp = computed(() => {
 
 .loading {
   color: var(--widget-color);
-  font-size: 1.2em;
+  font-size: 18px;
   position: absolute;
   top: 12px;
   right: 12px;
@@ -114,5 +113,3 @@ const titleProp = computed(() => {
   color: #ff6464;
 }
 </style>
-
- 
